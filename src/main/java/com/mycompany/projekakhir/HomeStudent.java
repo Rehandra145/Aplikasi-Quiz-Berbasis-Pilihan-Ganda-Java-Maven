@@ -4,6 +4,8 @@
  */
 package com.mycompany.projekakhir;
 
+import com.mongodb.client.MongoDatabase;
+
 /**
  *
  * @author infinix
@@ -29,14 +31,14 @@ public class HomeStudent extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        play = new javax.swing.JButton();
+        sejarah = new javax.swing.JRadioButton();
+        kewarganegaraan = new javax.swing.JRadioButton();
+        ekonomi = new javax.swing.JRadioButton();
+        geografi = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        level = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -51,36 +53,36 @@ public class HomeStudent extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(102, 204, 255));
-        jButton1.setText("PLAY");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        play.setBackground(new java.awt.Color(102, 204, 255));
+        play.setText("PLAY");
+        play.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                playActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Sejarah");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(sejarah);
+        sejarah.setText("Sejarah");
+        sejarah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                sejarahActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Kewarganegaraan");
+        buttonGroup1.add(kewarganegaraan);
+        kewarganegaraan.setText("Kewarganegaraan");
 
-        buttonGroup1.add(jRadioButton3);
-        jRadioButton3.setText("Ekonomi");
+        buttonGroup1.add(ekonomi);
+        ekonomi.setText("Ekonomi");
 
-        buttonGroup1.add(jRadioButton4);
-        jRadioButton4.setText("Geografi");
+        buttonGroup1.add(geografi);
+        geografi.setText("Geografi");
 
         jLabel1.setText("Pilih subjek");
 
         jLabel3.setText("Pilih level");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mudah", "Sedang", "Sulit" }));
+        level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mudah", "Sedang", "Sulit" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -95,21 +97,21 @@ public class HomeStudent extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton3)
-                            .addComponent(jRadioButton2)
-                            .addComponent(jRadioButton1))
+                            .addComponent(ekonomi)
+                            .addComponent(kewarganegaraan)
+                            .addComponent(sejarah))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jRadioButton4)
+                                .addComponent(geografi)
                                 .addComponent(jLabel3)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(level, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(328, 328, 328)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(433, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -120,19 +122,19 @@ public class HomeStudent extends javax.swing.JFrame {
                 .addGap(52, 52, 52)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton1)
+                .addComponent(sejarah)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton2)
+                .addComponent(kewarganegaraan)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton3)
+                .addComponent(ekonomi)
                 .addGap(18, 18, 18)
-                .addComponent(jRadioButton4)
+                .addComponent(geografi)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(181, 181, 181))
         );
 
@@ -151,20 +153,40 @@ public class HomeStudent extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
         // TODO add your handling code here:
-        QuizForm quiz = new QuizForm();
+        String selectedLevel = (String) level.getSelectedItem();
+        String selectedSubject = null;
+        
+        // Mendapatkan subject yang dipilih dari RadioButton
+        if (sejarah.isSelected()) {
+            selectedSubject = "Sejarah";
+        } else if (kewarganegaraan.isSelected()) {
+            selectedSubject = "Kewarganegaraan";
+        } else if (ekonomi.isSelected()) {
+            selectedSubject = "economics";
+        } else if (geografi.isSelected()) {
+            selectedSubject = "geography";
+        }
+        
+        if(selectedLevel != null && selectedSubject != null){
+            NoKoneksi koneksiDB = new NoKoneksi();
+            MongoDatabase db = koneksiDB.getDatabase();
+            if(db != null){
+                Quiz quiz = new Quiz(selectedLevel, selectedSubject);
+                quiz.setVisible(true);
+            }
+        }
         dispose();
-        quiz.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_playActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void sejarahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sejarahActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_sejarahActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,15 +225,15 @@ public class HomeStudent extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JRadioButton ekonomi;
+    private javax.swing.JRadioButton geografi;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JRadioButton kewarganegaraan;
+    private javax.swing.JComboBox<String> level;
+    private javax.swing.JButton play;
+    private javax.swing.JRadioButton sejarah;
     // End of variables declaration//GEN-END:variables
 }
