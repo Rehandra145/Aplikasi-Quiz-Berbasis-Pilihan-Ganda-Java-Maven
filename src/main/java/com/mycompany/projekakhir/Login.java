@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
  * @author infinix
  */
 public class Login extends javax.swing.JFrame {
+    private String currentUsername;
 
     /**
      * Creates new form Login
@@ -47,15 +48,18 @@ public class Login extends javax.swing.JFrame {
         setTitle("Login");
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(249, 247, 228));
         jPanel1.setAlignmentX(100.0F);
         jPanel1.setAlignmentY(100.0F);
         jPanel1.setPreferredSize(new java.awt.Dimension(900, 500));
 
+        jLabel1.setBackground(new java.awt.Color(18, 45, 79));
         jLabel1.setFont(new java.awt.Font("Microsoft PhagsPa", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(18, 45, 79));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("LOGIN");
 
+        Username.setBackground(new java.awt.Color(249, 247, 228));
         Username.setFont(new java.awt.Font("JetBrainsMono NF", 0, 12)); // NOI18N
         Username.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Username.setPreferredSize(new java.awt.Dimension(64, 40));
@@ -65,6 +69,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        Password.setBackground(new java.awt.Color(249, 247, 228));
         Password.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,17 +81,19 @@ public class Login extends javax.swing.JFrame {
 
         jLabel4.setText("Password");
 
+        Role.setBackground(new java.awt.Color(249, 247, 228));
+        Role.setForeground(new java.awt.Color(18, 45, 79));
         Role.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Siswa" }));
-        Role.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Role.setBorder(null);
         Role.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RoleActionPerformed(evt);
             }
         });
 
-        Button.setBackground(new java.awt.Color(0, 204, 255));
+        Button.setBackground(new java.awt.Color(18, 45, 79));
         Button.setFont(new java.awt.Font("JetBrains Mono ExtraBold", 1, 12)); // NOI18N
-        Button.setForeground(new java.awt.Color(255, 255, 255));
+        Button.setForeground(new java.awt.Color(249, 247, 228));
         Button.setText("LOGIN");
         Button.setBorder(null);
         Button.addActionListener(new java.awt.event.ActionListener() {
@@ -95,7 +102,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Untitled design (7).png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Untitled design (8).png"))); // NOI18N
 
         jButton1.setText("Home");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -120,8 +127,8 @@ public class Login extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(Role, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(59, 59, 59)
+                                .addComponent(Role, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(Button, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Username, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -152,7 +159,7 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(Password, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Role, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Role, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Button, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -218,7 +225,7 @@ public class Login extends javax.swing.JFrame {
         String query = "SELECT * FROM users WHERE username = ? AND password = ? AND role = ?";
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1, username);
-        ps.setString(2, password); // Sebaiknya gunakan hashing untuk password
+        ps.setString(2, password); 
         ps.setString(3, role);
 
         ResultSet rs = ps.executeQuery();
@@ -227,11 +234,13 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Login berhasil! Selamat datang, " + role + " " + username);
             // Lanjutkan ke halaman utama atau dashboard
             if(role.equalsIgnoreCase("siswa")){
-                HomeStudent home = new HomeStudent();
+                HomeStudent home = new HomeStudent(username);
                 dispose();
                 home.setVisible(true);
             }else{
-                
+                Admin ad = new Admin();
+                dispose();
+                ad.setVisible(true);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Username, password, atau peran salah. Coba lagi.");

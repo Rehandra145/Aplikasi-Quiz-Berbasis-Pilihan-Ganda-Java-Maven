@@ -16,17 +16,30 @@ public class Koneksi {
     private static Connection koneksi;
 
     public static Connection getKoneksi() {
-        if (koneksi == null) {
-            try {
+        try {
+            // Periksa apakah koneksi sudah diinisialisasi atau tertutup
+            if (koneksi == null || koneksi.isClosed()) {
                 String url = "jdbc:mysql://localhost:3306/pbo"; 
                 String user = "root"; 
                 String password = "SUZULYTDR"; 
                 koneksi = DriverManager.getConnection(url, user, password);
-                System.out.println("Koneksi berhasil!");
-            } catch (SQLException e) {
-                System.out.println("Koneksi gagal: " + e.getMessage());
+                System.out.println("Koneksi berhasil dibuka kembali!");
             }
+        } catch (SQLException e) {
+            System.out.println("Koneksi gagal: " + e.getMessage());
         }
         return koneksi;
     }
+    
+    public static void closeKoneksi() {
+        if (koneksi != null) {
+            try {
+                koneksi.close();
+                koneksi = null; // Set ke null agar bisa diinisialisasi ulang
+                System.out.println("Koneksi berhasil ditutup.");
+            } catch (SQLException e) {
+                System.out.println("Gagal menutup koneksi: " + e.getMessage());
+            }
+        }
     }
+ }

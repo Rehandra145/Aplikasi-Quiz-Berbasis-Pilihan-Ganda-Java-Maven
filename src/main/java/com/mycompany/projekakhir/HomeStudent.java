@@ -5,19 +5,63 @@
 package com.mycompany.projekakhir;
 
 import com.mongodb.client.MongoDatabase;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author infinix
  */
 public class HomeStudent extends javax.swing.JFrame {
-
+     private String currentUsername;
+     private String levelFilter;
+     private String subjectFilter;
+     private String querry;
+     private DefaultTableModel tableModel;
     /**
      * Creates new form HomeStudent
      */
-    public HomeStudent() {
+    public HomeStudent(String username) {
+        this.currentUsername = username;
         initComponents();
+        select.setVisible(false);
+        jPanel1.add(select);
+        task.setVisible(false);
+        jPanel1.add(task);
+        Nama.setText(this.currentUsername);
+        hy.setText("Welcome " + this.currentUsername);
     }
+    
+public void loadTask() {
+        tableModel = new DefaultTableModel(new Object[]{"Subject", "Level", "Due to", "Detail"}, 0);
+        taskTable.setModel(tableModel);
+    try{
+        Connection conn = Koneksi.getKoneksi();
+        String sql = "SELECT subject, level, finishDate FROM task WHERE isDone = '0'";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        // Tambahkan data dari ResultSet ke tabel
+        while (rs.next()) {
+            String Subject = rs.getString("subject");
+            String Level = rs.getString("level");
+            String DueTo = rs.getString("finishDate");
+
+            // Tambahkan baris baru ke tabel
+            tableModel.addRow(new Object[]{Subject, Level, DueTo});
+        }
+        // Tambahkan renderer dan editor ke kolom ke-3 (indeks 3)
+        taskTable.getColumnModel().getColumn(3).setCellRenderer(new ButtonRenderer());
+        taskTable.getColumnModel().getColumn(3).setCellEditor(new ButtonEditor(taskTable));
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Gagal dengan error: " + e.getMessage());
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -30,38 +74,167 @@ public class HomeStudent extends javax.swing.JFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        play = new javax.swing.JButton();
-        sejarah = new javax.swing.JRadioButton();
+        home = new javax.swing.JPanel();
+        hy = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        Nama = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        Quiz = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        rSButtonIconD1 = new rojerusan.RSButtonIconD();
+        select = new javax.swing.JPanel();
+        level = new javax.swing.JComboBox<>();
         kewarganegaraan = new javax.swing.JRadioButton();
+        sejarah = new javax.swing.JRadioButton();
         ekonomi = new javax.swing.JRadioButton();
+        play = new javax.swing.JButton();
         geografi = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        level = new javax.swing.JComboBox<>();
+        task = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        taskTable = new com.mycompany.jtable_custom.JTable_Custom();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Home");
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(249, 247, 228));
 
-        jButton2.setBackground(new java.awt.Color(102, 204, 255));
-        jButton2.setText("Exit");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        home.setBackground(new java.awt.Color(249, 247, 228));
+
+        hy.setFont(new java.awt.Font("JetBrains Mono", 1, 24)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("JetBrains Mono", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel2.setText("Udah belajar belum hari ini?...");
+
+        javax.swing.GroupLayout homeLayout = new javax.swing.GroupLayout(home);
+        home.setLayout(homeLayout);
+        homeLayout.setHorizontalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
+                .addContainerGap(401, Short.MAX_VALUE)
+                .addGroup(homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hy, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(366, 366, 366))
+        );
+        homeLayout.setVerticalGroup(
+            homeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homeLayout.createSequentialGroup()
+                .addContainerGap(308, Short.MAX_VALUE)
+                .addComponent(hy, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(236, 236, 236))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(18, 45, 79));
+
+        Nama.setBackground(new java.awt.Color(249, 247, 228));
+        Nama.setFont(new java.awt.Font("JetBrains Mono", 1, 18)); // NOI18N
+        Nama.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jButton1.setBackground(new java.awt.Color(249, 247, 228));
+        jButton1.setText("Leaderboard");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        play.setBackground(new java.awt.Color(102, 204, 255));
-        play.setText("PLAY");
-        play.addActionListener(new java.awt.event.ActionListener() {
+        Quiz.setBackground(new java.awt.Color(249, 247, 228));
+        Quiz.setText("Quiz");
+        Quiz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                playActionPerformed(evt);
+                QuizActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(249, 247, 228));
+        jButton3.setText("To Do");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        rSButtonIconD1.setBackground(new java.awt.Color(249, 247, 228));
+        rSButtonIconD1.setForeground(new java.awt.Color(18, 45, 79));
+        rSButtonIconD1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rehan.png"))); // NOI18N
+        rSButtonIconD1.setText("Exit");
+        rSButtonIconD1.setColorHover(new java.awt.Color(255, 255, 153));
+        rSButtonIconD1.setColorText(new java.awt.Color(18, 45, 79));
+        rSButtonIconD1.setColorTextHover(new java.awt.Color(0, 146, 206));
+        rSButtonIconD1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rSButtonIconD1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(rSButtonIconD1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(Nama, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Quiz, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(Nama, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(Quiz, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                .addComponent(rSButtonIconD1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
+
+        select.setBackground(new java.awt.Color(249, 247, 228));
+
+        level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mudah", "Sedang", "Sulit" }));
+        level.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                levelActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(kewarganegaraan);
+        kewarganegaraan.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
+        kewarganegaraan.setText("Kewarganegaraan");
+        kewarganegaraan.setOpaque(true);
+        kewarganegaraan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                kewarganegaraanMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                kewarganegaraanMouseExited(evt);
+            }
+        });
+        kewarganegaraan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kewarganegaraanActionPerformed(evt);
             }
         });
 
         buttonGroup1.add(sejarah);
+        sejarah.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         sejarah.setText("Sejarah");
         sejarah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,80 +242,193 @@ public class HomeStudent extends javax.swing.JFrame {
             }
         });
 
-        buttonGroup1.add(kewarganegaraan);
-        kewarganegaraan.setText("Kewarganegaraan");
-
+        ekonomi.setBackground(new java.awt.Color(255, 255, 255));
         buttonGroup1.add(ekonomi);
+        ekonomi.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         ekonomi.setText("Ekonomi");
+        ekonomi.setBorderPainted(true);
+        ekonomi.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        ekonomi.setOpaque(true);
+        ekonomi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ekonomiMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ekonomiMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ekonomiMouseExited(evt);
+            }
+        });
+        ekonomi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ekonomiActionPerformed(evt);
+            }
+        });
+
+        play.setBackground(new java.awt.Color(43, 205, 255));
+        play.setText("PLAY");
+        play.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                playMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                playMouseExited(evt);
+            }
+        });
+        play.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(geografi);
+        geografi.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         geografi.setText("Geografi");
+        geografi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                geografiActionPerformed(evt);
+            }
+        });
 
+        jLabel1.setFont(new java.awt.Font("JetBrains Mono", 1, 14)); // NOI18N
         jLabel1.setText("Pilih subjek");
 
+        jLabel3.setFont(new java.awt.Font("JetBrains Mono", 1, 14)); // NOI18N
         jLabel3.setText("Pilih level");
 
-        level.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mudah", "Sedang", "Sulit" }));
+        javax.swing.GroupLayout selectLayout = new javax.swing.GroupLayout(select);
+        select.setLayout(selectLayout);
+        selectLayout.setHorizontalGroup(
+            selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, selectLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(116, 116, 116))
+            .addGroup(selectLayout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addGroup(selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sejarah, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(geografi, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(selectLayout.createSequentialGroup()
+                        .addGap(401, 401, 401)
+                        .addGroup(selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(kewarganegaraan, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ekonomi, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(347, Short.MAX_VALUE))
+        );
+        selectLayout.setVerticalGroup(
+            selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, selectLayout.createSequentialGroup()
+                .addGap(177, 177, 177)
+                .addComponent(jLabel1)
+                .addGap(21, 21, 21)
+                .addGroup(selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sejarah, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(kewarganegaraan, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(selectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(geografi, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ekonomi, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(72, Short.MAX_VALUE))
+        );
+
+        task.setBackground(new java.awt.Color(249, 247, 228));
+
+        taskTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Subject", "Level", "Due To", "Detail"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        taskTable.setFocusable(false);
+        taskTable.setShowGrid(true);
+        taskTable.setShowVerticalLines(true);
+        taskTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(taskTable);
+        if (taskTable.getColumnModel().getColumnCount() > 0) {
+            taskTable.getColumnModel().getColumn(0).setResizable(false);
+            taskTable.getColumnModel().getColumn(1).setResizable(false);
+            taskTable.getColumnModel().getColumn(2).setResizable(false);
+            taskTable.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        javax.swing.GroupLayout taskLayout = new javax.swing.GroupLayout(task);
+        task.setLayout(taskLayout);
+        taskLayout.setHorizontalGroup(
+            taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(taskLayout.createSequentialGroup()
+                .addContainerGap(331, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(330, 330, 330))
+        );
+        taskLayout.setVerticalGroup(
+            taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taskLayout.createSequentialGroup()
+                .addContainerGap(156, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(309, 309, 309))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ekonomi)
-                            .addComponent(kewarganegaraan)
-                            .addComponent(sejarah))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(geografi)
-                                .addComponent(jLabel3)
-                                .addComponent(level, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(328, 328, 328)
-                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(433, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 1117, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 224, Short.MAX_VALUE)
+                    .addComponent(home, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(219, 219, 219)
+                    .addComponent(select, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(115, Short.MAX_VALUE)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGap(0, 220, Short.MAX_VALUE)
+                    .addComponent(task, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(sejarah)
-                .addGap(18, 18, 18)
-                .addComponent(kewarganegaraan)
-                .addGap(18, 18, 18)
-                .addComponent(ekonomi)
-                .addGap(18, 18, 18)
-                .addComponent(geografi)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(level, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addComponent(play, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(181, 181, 181))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(home, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(select, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(task, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,12 +441,17 @@ public class HomeStudent extends javax.swing.JFrame {
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
         // TODO add your handling code here:
+        NoKoneksi koneksiDB = new NoKoneksi();
+        Connection conn = Koneksi.getKoneksi();
+        MongoDatabase db = koneksiDB.getDatabase();
+        
+        if(conn != null){
         String selectedLevel = (String) level.getSelectedItem();
         String selectedSubject = null;
         
         // Mendapatkan subject yang dipilih dari RadioButton
         if (sejarah.isSelected()) {
-            selectedSubject = "Sejarah";
+            selectedSubject = "sejarah";
         } else if (kewarganegaraan.isSelected()) {
             selectedSubject = "Kewarganegaraan";
         } else if (ekonomi.isSelected()) {
@@ -170,23 +461,105 @@ public class HomeStudent extends javax.swing.JFrame {
         }
         
         if(selectedLevel != null && selectedSubject != null){
-            NoKoneksi koneksiDB = new NoKoneksi();
-            MongoDatabase db = koneksiDB.getDatabase();
             if(db != null){
-                Quiz quiz = new Quiz(selectedLevel, selectedSubject);
+                Quiz quiz = new Quiz(selectedLevel, selectedSubject, currentUsername);
+                dispose();
                 quiz.setVisible(true);
             }
+        }else{
+            JOptionPane.showMessageDialog(this, "Pilih yang benar");
+            return;
         }
-        dispose();
+      }
     }//GEN-LAST:event_playActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void sejarahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sejarahActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_sejarahActionPerformed
+
+    private void geografiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_geografiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_geografiActionPerformed
+
+    private void playMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playMouseEntered
+        // TODO add your handling code here:
+        play.setBackground(new Color(0, 102, 255));
+    }//GEN-LAST:event_playMouseEntered
+
+    private void playMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playMouseExited
+        // TODO add your handling code here:
+        play.setBackground(new Color(43, 205, 255));
+    }//GEN-LAST:event_playMouseExited
+
+    private void kewarganegaraanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kewarganegaraanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kewarganegaraanActionPerformed
+
+    private void levelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_levelActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    // Menyembunyikan panel select dan menampilkan panel task
+    
+    // Logika untuk menampilkan leaderboard
+    Filter fr = new Filter(levelFilter, subjectFilter, querry);
+    fr.curr = new Leaderboard(levelFilter, subjectFilter, querry);
+    fr.curr.loadLeaderboardData();
+    fr.curr.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void QuizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuizActionPerformed
+        // TODO add your handling code here:
+    // Menghapus semua komponen dari jPanel1
+    // Menampilkan panel select dan menyembunyikan panel task jika ada
+    home.setVisible(false);
+    task.setVisible(false);
+    select.setVisible(true);
+    jPanel1.add(select);
+    }//GEN-LAST:event_QuizActionPerformed
+
+    private void ekonomiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ekonomiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ekonomiActionPerformed
+
+    private void ekonomiMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ekonomiMouseEntered
+        // TODO add your handling code here:
+        ekonomi.setBackground(new Color(83, 180, 250));
+    }//GEN-LAST:event_ekonomiMouseEntered
+
+    private void ekonomiMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ekonomiMouseExited
+        // TODO add your handling code here:
+        ekonomi.setBackground(new Color(255, 255, 255));
+    }//GEN-LAST:event_ekonomiMouseExited
+
+    private void ekonomiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ekonomiMouseClicked
+
+    }//GEN-LAST:event_ekonomiMouseClicked
+
+    private void kewarganegaraanMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kewarganegaraanMouseEntered
+        // TODO add your handling code here:
+        kewarganegaraan.setBackground(new Color(83, 180, 250));      
+    }//GEN-LAST:event_kewarganegaraanMouseEntered
+
+    private void kewarganegaraanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kewarganegaraanMouseExited
+        // TODO add your handling code here:
+        kewarganegaraan.setBackground(new Color(255, 255, 255));
+    }//GEN-LAST:event_kewarganegaraanMouseExited
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        home.setVisible(false);
+        select.setVisible(false);
+        loadTask();
+        task.setVisible(true);
+        jPanel1.add(task);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void rSButtonIconD1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconD1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rSButtonIconD1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -216,24 +589,36 @@ public class HomeStudent extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HomeStudent().setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new HomeStudent(currentUsername).setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Nama;
+    private javax.swing.JButton Quiz;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton ekonomi;
     private javax.swing.JRadioButton geografi;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel home;
+    private javax.swing.JLabel hy;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JRadioButton kewarganegaraan;
     private javax.swing.JComboBox<String> level;
     private javax.swing.JButton play;
+    private rojerusan.RSButtonIconD rSButtonIconD1;
     private javax.swing.JRadioButton sejarah;
+    private javax.swing.JPanel select;
+    private javax.swing.JPanel task;
+    private com.mycompany.jtable_custom.JTable_Custom taskTable;
     // End of variables declaration//GEN-END:variables
 }

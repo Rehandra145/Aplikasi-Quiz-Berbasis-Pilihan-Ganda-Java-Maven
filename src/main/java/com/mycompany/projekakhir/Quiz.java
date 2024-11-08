@@ -11,10 +11,23 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import org.bson.Document;
 
 /**
@@ -22,36 +35,71 @@ import org.bson.Document;
  * @author infinix
  */
 public class Quiz extends javax.swing.JFrame {
+    private int correctAnswers = 0;
+    private int wrongAnswers = 0;
+    private int nullAnswer = 0;
+    private String selectedAnswer = null;
+    boolean skip = false;
+    boolean done = false;
+    private List<Document> userAnswers = new ArrayList<>();
+    private List<Document> soalRandom; 
     private MongoCursor<Document> cursor;
     private Timer timer;
     private int timeLimit;
     private int timeLeft; // 50 seconds
-    private String correctAnswer;
-    private String correctAnswerKey;
+    private int limitSoal;
+    public String correctAnswer;
+    public String correctAnswerKey;
+    public String selectedValue;
+    public String selected;
+    private String selectedLevel;
+    private String selectedSubject;
+    private String currentUsername;
+    public int soalVal;
+    public int nullVal;
+    Document questionDoc;
     /**
      * Creates new form Quiz
      */
-    public Quiz(String selectedLevel, String selectedSubject) {
+    
+    
+    public Quiz(String selectedLevel, String selectedSubject, String currentUsername) {
+        this.selectedLevel = selectedLevel;
+        this.selectedSubject = selectedSubject;
+        this.currentUsername = currentUsername;
+        System.out.println("Username yang diterima di Quiz: " + currentUsername);
         initComponents();
-                switch (selectedLevel) {
+        switch (selectedLevel) {
             case "Mudah":
                 timeLimit = 60;
+                limitSoal = 5;
+                soalVal = 20;
+                nullVal = 5;
                 break;
             case "Sedang":
                 timeLimit = 45;
+                limitSoal = 10;
+                soalVal = 10;
+                nullVal = 10;
                 break;
             case "Sulit":
                 timeLimit = 30;
+                limitSoal = 20;
+                soalVal = 5;
+                nullVal = 15;
                 break;
             default:
                 timeLimit = 60; // Default jika level tidak dikenal
+                limitSoal =  10;
                 break;
         }
         timeLeft = timeLimit;
         MongoDatabase database = new NoKoneksi().getDatabase();
         MongoCollection<Document> collection = database.getCollection("soal");
         Document filter = new Document("difficulty", selectedLevel).append("subject", selectedSubject);
-        cursor = collection.find(filter).iterator();
+        List<Document> soalList = collection.find(filter).into(new ArrayList<>());
+        Collections.shuffle(soalList);
+        soalRandom = soalList.subList(0, Math.min(soalList.size(), limitSoal));
         loadNextQuestion();
         startTimer(); 
     }
@@ -74,9 +122,13 @@ public class Quiz extends javax.swing.JFrame {
         option4 = new javax.swing.JRadioButton();
         timeLabel = new javax.swing.JLabel();
         Next = new javax.swing.JButton();
+        number = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
+        setSize(new java.awt.Dimension(1252, 720));
+        setState(6);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -119,52 +171,67 @@ public class Quiz extends javax.swing.JFrame {
             }
         });
 
+        number.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                numberAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(146, 146, 146)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(option1)
-                            .addComponent(option2))
-                        .addGap(442, 442, 442)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(option4)
-                            .addComponent(option3)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(308, 308, 308)
-                        .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(option2)
+                    .addComponent(option1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 797, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(option4)
+                    .addComponent(option3))
+                .addGap(259, 259, 259))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(number)
+                .addGap(57, 57, 57))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(467, 467, 467))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                        .addComponent(option3))
+                        .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(option1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(option1)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(number))
+                            .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(option3)))
                 .addGap(62, 62, 62)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(option2)
                     .addComponent(option4))
-                .addGap(54, 54, 54)
+                .addGap(53, 53, 53)
                 .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addGap(37, 37, 37))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -179,6 +246,7 @@ public class Quiz extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void option1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_option1ActionPerformed
@@ -187,8 +255,11 @@ public class Quiz extends javax.swing.JFrame {
 
     private void NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextActionPerformed
         // TODO add your handling code here:
-        checkAnswer(); 
-        loadNextQuestion();
+        checkAnswer();
+        if(done){ 
+            loadNextQuestion();
+            done = false;
+        }
     }//GEN-LAST:event_NextActionPerformed
 
     private void option3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_option3ActionPerformed
@@ -202,33 +273,45 @@ public class Quiz extends javax.swing.JFrame {
     private void option2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_option2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_option2ActionPerformed
+
+    private void numberAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_numberAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numberAncestorAdded
     
     /**
      * @param args the command line arguments
      */
     
  private void loadNextQuestion() {
-
-        if (cursor.hasNext()) {
-            Document questionDoc = cursor.next();
+     int curr = 0;
+        if (!soalRandom.isEmpty()) {
+            questionDoc = soalRandom.remove(0);
             Soal.setText(questionDoc.getString("question"));
             option1.setText(questionDoc.get("options", Document.class).getString("option1"));
             option2.setText(questionDoc.get("options", Document.class).getString("option2"));
             option3.setText(questionDoc.get("options", Document.class).getString("option3"));
             option4.setText(questionDoc.get("options", Document.class).getString("option4"));
-            optionGroup.clearSelection(); // Clear previous selection
+            optionGroup.clearSelection(); 
+            
             // Mengambil jawaban benar dari dokumen
             correctAnswerKey = questionDoc.getString("correct_answer");
             correctAnswer = questionDoc.get("options", Document.class).getString(correctAnswerKey);
-        } else {
-            JOptionPane.showMessageDialog(this, "No more questions available.");
-            System.exit(0);
+            
+            if (curr == soalRandom.size()){
+                Next.setText("Finish");
+            }else{
+                Next.setText("Next");
+            }
+            
+            curr++;
+        }else{
+            timer.cancel();
+            showScorePage();
         }
     }
  
- private void checkAnswer() {
+    private void checkAnswer() {
         // Mendapatkan pilihan pengguna
-        String selectedAnswer = null;
         if (option1.isSelected()) {
             selectedAnswer = "option1";
         } else if (option2.isSelected()) {
@@ -238,18 +321,32 @@ public class Quiz extends javax.swing.JFrame {
         } else if (option4.isSelected()) {
             selectedAnswer = "option4";
         }
-
+        System.out.println(selectedAnswer);
         // Memeriksa apakah jawaban yang dipilih benar
         if (selectedAnswer != null) {
+            selectedValue = questionDoc.get("options", Document.class).getString(selectedAnswer);
+            Document userResponse = new Document("question", Soal.getText())
+            .append("selectedAnswer", selectedAnswer)
+            .append("correctAnswer", correctAnswerKey)
+            .append("value", correctAnswer)
+            .append("selected", selectedValue);
+            userAnswers.add(userResponse);
             if (selectedAnswer.equals(correctAnswerKey)) {
-                JOptionPane.showMessageDialog(this, "Correct!");
-                resetTimer();
+                correctAnswers++;
             } else {
-                JOptionPane.showMessageDialog(this, "Incorrect. The correct answer is: " + correctAnswer);
-                resetTimer();
+                wrongAnswers++;
             }
+            resetTimer();
+            selectedAnswer = null;
+            done = true;
         } else {
-            JOptionPane.showMessageDialog(this, "Please select an answer.");
+            int result = JOptionPane.showConfirmDialog(this, "Anda yakin mengosongkan jawaban?", "Konfirmasi",JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION){
+                done = true;
+                nullAnswer++;
+            }else if (result == JOptionPane.NO_OPTION){
+                done = false;
+            }
         }
     }
 
@@ -278,6 +375,55 @@ public class Quiz extends javax.swing.JFrame {
         timeLeft = timeLimit;
         startTimer();
     }
+    
+    private void showScorePage() {
+    HomeStudent home = new HomeStudent(currentUsername);
+    // Perhitungan skor
+    int score = soalVal*correctAnswers - nullAnswer*nullVal;
+    if(score < 0){
+        score = 0;
+    }
+    saveGameHistoryToDatabase(correctAnswers, wrongAnswers, nullAnswer, score);
+    String message = "Hasil: " + correctAnswers + " benar, " + wrongAnswers + " salah, " + nullAnswer + " kosong" + ". Score : " + score;
+    int result = JOptionPane.showConfirmDialog(this, message + "\nIngin melihat rekap jawaban?", 
+                                               "Hasil Kuis", JOptionPane.YES_NO_OPTION);
+    if (result == JOptionPane.YES_OPTION) {
+        dispose();
+        home.setVisible(true);
+        showAnswerSummary();
+    }else{
+        dispose();
+        home.setVisible(true);
+    }
+}
+    
+    // Metode untuk menyimpan riwayat permainan ke database
+    private void saveGameHistoryToDatabase(int correctAnswers, int wrongAnswers, int nullAnswers, int score) {
+        try (Connection connection = Koneksi.getKoneksi()) {
+            String sql = "INSERT INTO leaderboard (username, subject, level, benar, salah, kosong, score) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, currentUsername); 
+            preparedStatement.setString(2, selectedSubject);
+            preparedStatement.setString(3, selectedLevel);
+            preparedStatement.setInt(4, correctAnswers);
+            preparedStatement.setInt(5, wrongAnswers);
+            preparedStatement.setInt(6, nullAnswers);
+            preparedStatement.setInt(7, score);
+            int rowsInserted = preparedStatement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Riwayat permainan berhasil disimpan ke database.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Kesalahan saat menyimpan data ke database: " + e.getMessage());
+        }
+    }
+
+private void showAnswerSummary() {
+    summary summary = new summary(this,userAnswers);
+    summary.setVisible(true);
+}
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -305,15 +451,15 @@ public class Quiz extends javax.swing.JFrame {
         /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                Quiz quiz = new Quiz(MongoDatabase db, String selectedLevel, String selectedSubject);
+//                Quiz quiz = new Quiz(selectedLevel, selectedSubject, currentUsername);
 //            }
 //        });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Next;
     private javax.swing.JLabel Soal;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel number;
     private javax.swing.JRadioButton option1;
     private javax.swing.JRadioButton option2;
     private javax.swing.JRadioButton option3;

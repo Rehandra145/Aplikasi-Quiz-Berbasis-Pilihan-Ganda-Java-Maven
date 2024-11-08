@@ -61,7 +61,7 @@ public class Auth extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Untitled design (7).png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Untitled design (8).png"))); // NOI18N
 
         jLabel1.setText("Already have an account?");
 
