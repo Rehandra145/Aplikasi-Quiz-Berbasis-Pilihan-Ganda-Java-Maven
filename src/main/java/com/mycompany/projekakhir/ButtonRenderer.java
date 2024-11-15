@@ -4,26 +4,64 @@
  */
 package com.mycompany.projekakhir;
 
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.LayoutStyle;
 import javax.swing.table.TableCellRenderer;
 
-public class ButtonRenderer extends JButton implements TableCellRenderer {
+public class ButtonRenderer extends JPanel implements TableCellRenderer {
 
     public ButtonRenderer() {
-        setOpaque(true);
-        setBackground(new Color (255, 255, 255));
-        setPreferredSize(new Dimension(15, 4));
+        setBackground(Color.WHITE);
     }
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
-        setText((value == null) ? "Lihat" : value.toString());
+        removeAll();
+        FlatLightLaf.setup();
+        JButton seeButton = new JButton(new FlatSVGIcon("SVGICON/see.svg", 0.35f));
+        JButton editButton = new JButton(new FlatSVGIcon("SVGICON/edit.svg", 0.35f));
+        JButton deleteButton = new JButton(new FlatSVGIcon("SVGICON/delete.svg", 0.35f));
+
+        GroupLayout layout = new GroupLayout(this);
+        setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(seeButton)
+                        .addGap(10)
+                        .addComponent(editButton)
+                        .addGap(10)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                .addComponent(seeButton)
+                .addComponent(editButton)
+                .addComponent(deleteButton)
+        );
+
         return this;
     }
-}
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        g.setColor(Color.LIGHT_GRAY);
+        g.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
+    }
+}

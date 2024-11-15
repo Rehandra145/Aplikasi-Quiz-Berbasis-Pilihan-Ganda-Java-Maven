@@ -1,4 +1,4 @@
- /*
+        /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -7,12 +7,14 @@ package com.mycompany.projekakhir;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,38 +37,43 @@ import org.bson.Document;
  * @author infinix
  */
 public class Quiz extends javax.swing.JFrame {
+
     private int correctAnswers = 0;
     private int wrongAnswers = 0;
     private int nullAnswer = 0;
-    private String selectedAnswer = null;
-    boolean skip = false;
-    boolean done = false;
-    private List<Document> userAnswers = new ArrayList<>();
-    private List<Document> soalRandom; 
-    private MongoCursor<Document> cursor;
-    private Timer timer;
+    public int nullVal;
+    public int soalVal;
     private int timeLimit;
     private int timeLeft; // 50 seconds
     private int limitSoal;
     public String correctAnswer;
+    private String selectedAnswer = null;
     public String correctAnswerKey;
     public String selectedValue;
     public String selected;
+    public String review;
     private String selectedLevel;
     private String selectedSubject;
     private String currentUsername;
-    public int soalVal;
-    public int nullVal;
+    public boolean isTask = false;
+    boolean skip = false;
+    boolean done = false;
+    private List<Document> userAnswers = new ArrayList<>();
+    private List<Document> soalRandom;
+    private MongoCursor<Document> cursor;
+    private Timer timer;
+    private Detail dt;
     Document questionDoc;
+
     /**
      * Creates new form Quiz
      */
-    
-    
-    public Quiz(String selectedLevel, String selectedSubject, String currentUsername) {
+
+    public Quiz(String selectedLevel, String selectedSubject, String currentUsername, Detail dt) {
         this.selectedLevel = selectedLevel;
         this.selectedSubject = selectedSubject;
         this.currentUsername = currentUsername;
+        this.dt = dt;
         System.out.println("Username yang diterima di Quiz: " + currentUsername);
         initComponents();
         switch (selectedLevel) {
@@ -90,7 +97,7 @@ public class Quiz extends javax.swing.JFrame {
                 break;
             default:
                 timeLimit = 60; // Default jika level tidak dikenal
-                limitSoal =  10;
+                limitSoal = 10;
                 break;
         }
         timeLeft = timeLimit;
@@ -101,7 +108,7 @@ public class Quiz extends javax.swing.JFrame {
         Collections.shuffle(soalList);
         soalRandom = soalList.subList(0, Math.min(soalList.size(), limitSoal));
         loadNextQuestion();
-        startTimer(); 
+        startTimer();
     }
 
     /**
@@ -130,9 +137,9 @@ public class Quiz extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1252, 720));
         setState(6);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(249, 247, 228));
 
-        Soal.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Soal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Soal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         optionGroup.add(option1);
@@ -150,6 +157,14 @@ public class Quiz extends javax.swing.JFrame {
         });
 
         optionGroup.add(option3);
+        option3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                option3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                option3MouseExited(evt);
+            }
+        });
         option3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 option3ActionPerformed(evt);
@@ -157,6 +172,14 @@ public class Quiz extends javax.swing.JFrame {
         });
 
         optionGroup.add(option4);
+        option4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                option4MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                option4MouseExited(evt);
+            }
+        });
         option4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 option4ActionPerformed(evt);
@@ -185,53 +208,51 @@ public class Quiz extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(option2)
-                    .addComponent(option1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 797, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(option4)
-                    .addComponent(option3))
-                .addGap(259, 259, 259))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(number)
-                .addGap(57, 57, 57))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(467, 467, 467))
+                .addGap(117, 117, 117))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(146, 146, 146)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(option1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                            .addComponent(option2, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(option4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(option3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 838, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
+                .addComponent(number)
+                .addGap(57, 57, 57))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(option1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(number))
-                            .addComponent(Soal, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(option3)))
-                .addGap(62, 62, 62)
+                        .addGap(23, 23, 23)
+                        .addComponent(number))
+                    .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(option3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(option1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(option2)
-                    .addComponent(option4))
-                .addGap(53, 53, 53)
+                    .addComponent(option4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(option2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(62, 62, 62)
                 .addComponent(Next, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addGap(72, 72, 72))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -256,7 +277,7 @@ public class Quiz extends javax.swing.JFrame {
     private void NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextActionPerformed
         // TODO add your handling code here:
         checkAnswer();
-        if(done){ 
+        if (done) {
             loadNextQuestion();
             done = false;
         }
@@ -264,6 +285,7 @@ public class Quiz extends javax.swing.JFrame {
 
     private void option3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_option3ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_option3ActionPerformed
 
     private void option4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_option4ActionPerformed
@@ -277,13 +299,32 @@ public class Quiz extends javax.swing.JFrame {
     private void numberAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_numberAncestorAdded
         // TODO add your handling code here:
     }//GEN-LAST:event_numberAncestorAdded
-    
+
+    private void option3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option3MouseEntered
+        // TODO add your handling code here:
+        option3.setBackground(new Color(0, 102, 255));
+    }//GEN-LAST:event_option3MouseEntered
+
+    private void option4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option4MouseEntered
+        // TODO add your handling code here:
+        option4.setBackground(new Color(0, 102, 255));
+    }//GEN-LAST:event_option4MouseEntered
+
+    private void option4MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option4MouseExited
+        // TODO add your handling code here:
+        option4.setBackground(jPanel1.getBackground());
+    }//GEN-LAST:event_option4MouseExited
+
+    private void option3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option3MouseExited
+        // TODO add your handling code here:
+        option3.setBackground(jPanel1.getBackground());
+    }//GEN-LAST:event_option3MouseExited
+
     /**
      * @param args the command line arguments
      */
-    
- private void loadNextQuestion() {
-     int curr = 0;
+    private void loadNextQuestion() {
+        int curr = 0;
         if (!soalRandom.isEmpty()) {
             questionDoc = soalRandom.remove(0);
             Soal.setText(questionDoc.getString("question"));
@@ -291,25 +332,27 @@ public class Quiz extends javax.swing.JFrame {
             option2.setText(questionDoc.get("options", Document.class).getString("option2"));
             option3.setText(questionDoc.get("options", Document.class).getString("option3"));
             option4.setText(questionDoc.get("options", Document.class).getString("option4"));
-            optionGroup.clearSelection(); 
-            
+            optionGroup.clearSelection();
+
             // Mengambil jawaban benar dari dokumen
             correctAnswerKey = questionDoc.getString("correct_answer");
+            review = questionDoc.getString("review");
             correctAnswer = questionDoc.get("options", Document.class).getString(correctAnswerKey);
-            
-            if (curr == soalRandom.size()){
+
+            if (curr == soalRandom.size()) {
                 Next.setText("Finish");
-            }else{
+            } else {
                 Next.setText("Next");
             }
-            
+
             curr++;
-        }else{
+        } else {
+            Next.setEnabled(false);
             timer.cancel();
             showScorePage();
         }
     }
- 
+
     private void checkAnswer() {
         // Mendapatkan pilihan pengguna
         if (option1.isSelected()) {
@@ -326,10 +369,11 @@ public class Quiz extends javax.swing.JFrame {
         if (selectedAnswer != null) {
             selectedValue = questionDoc.get("options", Document.class).getString(selectedAnswer);
             Document userResponse = new Document("question", Soal.getText())
-            .append("selectedAnswer", selectedAnswer)
-            .append("correctAnswer", correctAnswerKey)
-            .append("value", correctAnswer)
-            .append("selected", selectedValue);
+                    .append("selectedAnswer", selectedAnswer)
+                    .append("correctAnswer", correctAnswerKey)
+                    .append("value", correctAnswer)
+                    .append("selected", selectedValue)
+                    .append("review", review);
             userAnswers.add(userResponse);
             if (selectedAnswer.equals(correctAnswerKey)) {
                 correctAnswers++;
@@ -340,11 +384,11 @@ public class Quiz extends javax.swing.JFrame {
             selectedAnswer = null;
             done = true;
         } else {
-            int result = JOptionPane.showConfirmDialog(this, "Anda yakin mengosongkan jawaban?", "Konfirmasi",JOptionPane.YES_NO_OPTION);
-            if(result == JOptionPane.YES_OPTION){
+            int result = JOptionPane.showConfirmDialog(this, "Anda yakin mengosongkan jawaban?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
                 done = true;
                 nullAnswer++;
-            }else if (result == JOptionPane.NO_OPTION){
+            } else if (result == JOptionPane.NO_OPTION) {
                 done = false;
             }
         }
@@ -367,7 +411,7 @@ public class Quiz extends javax.swing.JFrame {
             }
         }, 0, 1000);
     }
-    
+
     private void resetTimer() {
         if (timer != null) {
             timer.cancel();
@@ -375,54 +419,89 @@ public class Quiz extends javax.swing.JFrame {
         timeLeft = timeLimit;
         startTimer();
     }
-    
-    private void showScorePage() {
-    HomeStudent home = new HomeStudent(currentUsername);
-    // Perhitungan skor
-    int score = soalVal*correctAnswers - nullAnswer*nullVal;
-    if(score < 0){
-        score = 0;
-    }
-    saveGameHistoryToDatabase(correctAnswers, wrongAnswers, nullAnswer, score);
-    String message = "Hasil: " + correctAnswers + " benar, " + wrongAnswers + " salah, " + nullAnswer + " kosong" + ". Score : " + score;
-    int result = JOptionPane.showConfirmDialog(this, message + "\nIngin melihat rekap jawaban?", 
-                                               "Hasil Kuis", JOptionPane.YES_NO_OPTION);
-    if (result == JOptionPane.YES_OPTION) {
-        dispose();
-        home.setVisible(true);
-        showAnswerSummary();
-    }else{
-        dispose();
-        home.setVisible(true);
-    }
-}
-    
-    // Metode untuk menyimpan riwayat permainan ke database
-    private void saveGameHistoryToDatabase(int correctAnswers, int wrongAnswers, int nullAnswers, int score) {
-        try (Connection connection = Koneksi.getKoneksi()) {
-            String sql = "INSERT INTO leaderboard (username, subject, level, benar, salah, kosong, score) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, currentUsername); 
-            preparedStatement.setString(2, selectedSubject);
-            preparedStatement.setString(3, selectedLevel);
-            preparedStatement.setInt(4, correctAnswers);
-            preparedStatement.setInt(5, wrongAnswers);
-            preparedStatement.setInt(6, nullAnswers);
-            preparedStatement.setInt(7, score);
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Riwayat permainan berhasil disimpan ke database.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Kesalahan saat menyimpan data ke database: " + e.getMessage());
+    private void showScorePage() {
+        HomeStudent home = new HomeStudent(currentUsername);
+        // Perhitungan skor
+        int score = soalVal * correctAnswers - nullAnswer * nullVal;
+        if (score < 0) {
+            score = 0;
+        }
+        saveGameHistoryToDatabase(correctAnswers, wrongAnswers, nullAnswer, score, dt.id);
+        String message = "Hasil: " + correctAnswers + " benar, " + wrongAnswers + " salah, " + nullAnswer + " kosong" + ". Score : " + score;
+        int result = JOptionPane.showConfirmDialog(this, message + "\nIngin melihat rekap jawaban?",
+                "Hasil Kuis", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            dispose();
+            showAnswerSummary();
+        } else {
+            dispose();
+            return;
         }
     }
 
-private void showAnswerSummary() {
-    summary summary = new summary(this,userAnswers);
-    summary.setVisible(true);
-}
+    // Metode untuk menyimpan riwayat permainan ke database
+    private void saveGameHistoryToDatabase(int correctAnswers, int wrongAnswers, int nullAnswers, int score, int id) {
+        if (dt == null) {
+            dt.id = 0;
+        }
+        if (isTask == true) {
+            try (Connection connection = Koneksi.getKoneksi()) {
+                String select = null;
+                if (dt != null) {
+                    select = "SELECT id FROM task where id = " + dt.id;
+                }
+                PreparedStatement ps = connection.prepareStatement(select);
+                ResultSet rs = ps.executeQuery();
+                int idTask = 0;
+                if (rs.next()) {
+                    idTask = rs.getInt("id");
+                }
+
+                //save game
+                String sql = "INSERT INTO taskDone (idTask, username, subject, level, benar, salah, kosong, score) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                ps = connection.prepareStatement(sql);
+                ps.setInt(1, idTask);
+                ps.setString(2, currentUsername);
+                ps.setString(3, selectedSubject);
+                ps.setString(4, selectedLevel);
+                ps.setInt(5, correctAnswers);
+                ps.setInt(6, wrongAnswers);
+                ps.setInt(7, nullAnswers);
+                ps.setInt(8, score);
+                dt.isDone = true;
+                int sukses = ps.executeUpdate();
+                if (sukses > 0) {
+                    System.out.println("Riwayat permainan berhasil disimpan ke taskDone.");
+                }
+            } catch (SQLException e) {
+                System.out.println("gagal dengan pesan " + e.getMessage());
+            }
+        } else {
+            try (Connection connection = Koneksi.getKoneksi()) {
+                String sql = "INSERT INTO leaderboard (username, subject, level, benar, salah, kosong, score) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, currentUsername);
+                preparedStatement.setString(2, selectedSubject);
+                preparedStatement.setString(3, selectedLevel);
+                preparedStatement.setInt(4, correctAnswers);
+                preparedStatement.setInt(5, wrongAnswers);
+                preparedStatement.setInt(6, nullAnswers);
+                preparedStatement.setInt(7, score);
+                int rowsInserted = preparedStatement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Riwayat permainan berhasil disimpan ke leaderboard.");
+                }
+            } catch (SQLException e) {
+                System.out.println("gagal dengan pesan " + e.getMessage());
+            }
+        }
+    }
+
+    private void showAnswerSummary() {
+        summary summary = new summary(this, userAnswers);
+        summary.setVisible(true);
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

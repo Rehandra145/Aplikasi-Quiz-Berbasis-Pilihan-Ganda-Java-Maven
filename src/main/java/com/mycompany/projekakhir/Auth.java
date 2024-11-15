@@ -4,6 +4,8 @@
  */
 package com.mycompany.projekakhir;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 /**
  *
  * @author infinix
@@ -15,6 +17,7 @@ public class Auth extends javax.swing.JFrame {
      */
     public Auth() {
         initComponents();
+        FlatLightLaf.setup();
     }
 
     /**

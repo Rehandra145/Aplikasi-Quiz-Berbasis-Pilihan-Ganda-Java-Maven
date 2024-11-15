@@ -24,9 +24,13 @@ public class summary extends javax.swing.JFrame{
         for (Document answer : userAnswers) {
             String correctAnswer = answer.getString("value");
             String userAnswer = answer.getString("selected");
+            String pemisah = ("--------------------------------------------------------------------------------");
+            String review = answer.getString("review");
             summaryText.append("Soal: ").append(answer.getString("question")).append("\n")
                        .append("Jawaban Anda: ").append(userAnswer).append("\n")
-                       .append("Jawaban Benar: ").append(correctAnswer).append("\n\n");
+                       .append("Jawaban Benar: ").append(correctAnswer).append("\n\n")
+                       .append("Review: ").append(review).append("\n\n")
+                       .append(pemisah).append("\n\n");
         }
         summaryArea.setText(summaryText.toString());
         summaryArea.setEditable(false);
