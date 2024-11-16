@@ -129,8 +129,8 @@ public class HomeStudent extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         Quiz = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        rSButtonIconD1 = new rojerusan.RSButtonIconD();
-        hisotryBtn = new rojerusan.RSMaterialButtonRectangle();
+        jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         select = new javax.swing.JPanel();
         level = new javax.swing.JComboBox<>();
         kewarganegaraan = new javax.swing.JRadioButton();
@@ -141,12 +141,12 @@ public class HomeStudent extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         history = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        History = new com.mycompany.jtable_custom.JTable_Custom();
         historyName = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        History = new javax.swing.JTable();
         task = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        taskTable = new com.mycompany.jtable_custom.JTable_Custom();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        taskTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home");
@@ -214,24 +214,18 @@ public class HomeStudent extends javax.swing.JFrame {
             }
         });
 
-        rSButtonIconD1.setBackground(new java.awt.Color(249, 247, 228));
-        rSButtonIconD1.setForeground(new java.awt.Color(18, 45, 79));
-        rSButtonIconD1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rehan.png"))); // NOI18N
-        rSButtonIconD1.setText("Exit");
-        rSButtonIconD1.setColorHover(new java.awt.Color(255, 255, 153));
-        rSButtonIconD1.setColorText(new java.awt.Color(18, 45, 79));
-        rSButtonIconD1.setColorTextHover(new java.awt.Color(0, 146, 206));
-        rSButtonIconD1.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("EXIT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rSButtonIconD1ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
-        hisotryBtn.setText("History");
-        hisotryBtn.setFont(new java.awt.Font("JetBrains Mono", 1, 14)); // NOI18N
-        hisotryBtn.addActionListener(new java.awt.event.ActionListener() {
+        jButton4.setBackground(new java.awt.Color(249, 247, 228));
+        jButton4.setText("History");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hisotryBtnActionPerformed(evt);
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -239,17 +233,19 @@ public class HomeStudent extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(22, 22, 22))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Nama, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(rSButtonIconD1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(hisotryBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                            .addComponent(Quiz, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                        .addComponent(Quiz, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -262,12 +258,12 @@ public class HomeStudent extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(hisotryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
-                .addComponent(rSButtonIconD1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(118, 118, 118))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(111, 111, 111))
         );
 
         select.setBackground(new java.awt.Color(249, 247, 228));
@@ -279,6 +275,7 @@ public class HomeStudent extends javax.swing.JFrame {
             }
         });
 
+        kewarganegaraan.setBackground(new java.awt.Color(249, 247, 228));
         buttonGroup1.add(kewarganegaraan);
         kewarganegaraan.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         kewarganegaraan.setText("Kewarganegaraan");
@@ -300,13 +297,21 @@ public class HomeStudent extends javax.swing.JFrame {
         buttonGroup1.add(sejarah);
         sejarah.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         sejarah.setText("Sejarah");
+        sejarah.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                sejarahMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                sejarahMouseExited(evt);
+            }
+        });
         sejarah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sejarahActionPerformed(evt);
             }
         });
 
-        ekonomi.setBackground(new java.awt.Color(255, 255, 255));
+        ekonomi.setBackground(new java.awt.Color(249, 247, 228));
         buttonGroup1.add(ekonomi);
         ekonomi.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         ekonomi.setText("Ekonomi");
@@ -349,6 +354,14 @@ public class HomeStudent extends javax.swing.JFrame {
         buttonGroup1.add(geografi);
         geografi.setFont(new java.awt.Font("JetBrains Mono", 0, 12)); // NOI18N
         geografi.setText("Geografi");
+        geografi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                geografiMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                geografiMouseExited(evt);
+            }
+        });
         geografi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 geografiActionPerformed(evt);
@@ -408,7 +421,8 @@ public class HomeStudent extends javax.swing.JFrame {
 
         history.setBackground(new java.awt.Color(249, 247, 228));
 
-        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        historyName.setFont(new java.awt.Font("JetBrains Mono", 1, 18)); // NOI18N
+        historyName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         History.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -418,39 +432,25 @@ public class HomeStudent extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Nama", "Subject", "Level", "Score"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
+        History.setRowHeight(40);
         History.setShowGrid(true);
-        History.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(History);
-        if (History.getColumnModel().getColumnCount() > 0) {
-            History.getColumnModel().getColumn(0).setResizable(false);
-            History.getColumnModel().getColumn(1).setResizable(false);
-            History.getColumnModel().getColumn(2).setResizable(false);
-            History.getColumnModel().getColumn(3).setResizable(false);
-        }
-
-        historyName.setFont(new java.awt.Font("JetBrains Mono", 1, 18)); // NOI18N
-        historyName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jScrollPane3.setViewportView(History);
 
         javax.swing.GroupLayout historyLayout = new javax.swing.GroupLayout(history);
         history.setLayout(historyLayout);
         historyLayout.setHorizontalGroup(
             historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(historyLayout.createSequentialGroup()
-                .addGap(329, 329, 329)
-                .addGroup(historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(historyName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(historyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(historyLayout.createSequentialGroup()
+                        .addGap(329, 329, 329)
+                        .addComponent(historyName, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(historyLayout.createSequentialGroup()
+                        .addGap(182, 182, 182)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(330, Short.MAX_VALUE))
         );
         historyLayout.setVerticalGroup(
@@ -458,14 +458,12 @@ public class HomeStudent extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, historyLayout.createSequentialGroup()
                 .addGap(99, 99, 99)
                 .addComponent(historyName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(383, 383, 383))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         task.setBackground(new java.awt.Color(249, 247, 228));
-
-        jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
 
         taskTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -475,43 +473,28 @@ public class HomeStudent extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Subject", "Level", "Due To", "Detail"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        taskTable.setFocusable(false);
+        ));
+        taskTable.setRowHeight(40);
         taskTable.setShowGrid(true);
-        taskTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(taskTable);
-        if (taskTable.getColumnModel().getColumnCount() > 0) {
-            taskTable.getColumnModel().getColumn(0).setResizable(false);
-            taskTable.getColumnModel().getColumn(1).setResizable(false);
-            taskTable.getColumnModel().getColumn(2).setResizable(false);
-            taskTable.getColumnModel().getColumn(3).setResizable(false);
-        }
+        jScrollPane1.setViewportView(taskTable);
 
         javax.swing.GroupLayout taskLayout = new javax.swing.GroupLayout(task);
         task.setLayout(taskLayout);
         taskLayout.setHorizontalGroup(
             taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(taskLayout.createSequentialGroup()
-                .addGap(135, 135, 135)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 612, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(356, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, taskLayout.createSequentialGroup()
+                .addContainerGap(447, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(204, 204, 204))
         );
         taskLayout.setVerticalGroup(
             taskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(taskLayout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addGap(153, 153, 153)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -661,7 +644,7 @@ public class HomeStudent extends javax.swing.JFrame {
 
     private void ekonomiMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ekonomiMouseExited
         // TODO add your handling code here:
-        ekonomi.setBackground(new Color(255, 255, 255));
+        ekonomi.setBackground(select.getBackground());
     }//GEN-LAST:event_ekonomiMouseExited
 
     private void ekonomiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ekonomiMouseClicked
@@ -675,7 +658,7 @@ public class HomeStudent extends javax.swing.JFrame {
 
     private void kewarganegaraanMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kewarganegaraanMouseExited
         // TODO add your handling code here:
-        kewarganegaraan.setBackground(new Color(255, 255, 255));
+        kewarganegaraan.setBackground(select.getBackground());
     }//GEN-LAST:event_kewarganegaraanMouseExited
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -688,22 +671,42 @@ public class HomeStudent extends javax.swing.JFrame {
         jPanel1.add(task);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void rSButtonIconD1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rSButtonIconD1ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Auth at = new Auth();
+                Auth at = new Auth();
         dispose();
         at.setVisible(true);
-    }//GEN-LAST:event_rSButtonIconD1ActionPerformed
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void hisotryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hisotryBtnActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        home.setVisible(false);
+                home.setVisible(false);
         select.setVisible(false);
         task.setVisible(false);
         loadHistory();
         history.setVisible(true);
         jPanel1.add(history);
-    }//GEN-LAST:event_hisotryBtnActionPerformed
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void sejarahMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sejarahMouseEntered
+        // TODO add your handling code here:
+        sejarah.setBackground(new Color(83, 180, 250));
+    }//GEN-LAST:event_sejarahMouseEntered
+
+    private void sejarahMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sejarahMouseExited
+        // TODO add your handling code here:
+        sejarah.setBackground(select.getBackground());
+    }//GEN-LAST:event_sejarahMouseExited
+
+    private void geografiMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_geografiMouseEntered
+        // TODO add your handling code here:
+        geografi.setBackground(new Color(83, 180, 250));
+    }//GEN-LAST:event_geografiMouseEntered
+
+    private void geografiMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_geografiMouseExited
+        // TODO add your handling code here:
+        geografi.setBackground(select.getBackground());
+    }//GEN-LAST:event_geografiMouseExited
 
     /**
      * @param args the command line arguments
@@ -742,33 +745,33 @@ public class HomeStudent extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.mycompany.jtable_custom.JTable_Custom History;
+    private javax.swing.JTable History;
     private javax.swing.JLabel Nama;
     private javax.swing.JButton Quiz;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton ekonomi;
     private javax.swing.JRadioButton geografi;
-    private rojerusan.RSMaterialButtonRectangle hisotryBtn;
     private javax.swing.JPanel history;
     private javax.swing.JLabel historyName;
     private javax.swing.JPanel home;
     private javax.swing.JLabel hy;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JRadioButton kewarganegaraan;
     private javax.swing.JComboBox<String> level;
     private javax.swing.JButton play;
-    private rojerusan.RSButtonIconD rSButtonIconD1;
     private javax.swing.JRadioButton sejarah;
     private javax.swing.JPanel select;
     private javax.swing.JPanel task;
-    private com.mycompany.jtable_custom.JTable_Custom taskTable;
+    private javax.swing.JTable taskTable;
     // End of variables declaration//GEN-END:variables
 }

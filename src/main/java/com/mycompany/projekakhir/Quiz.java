@@ -142,20 +142,39 @@ public class Quiz extends javax.swing.JFrame {
         Soal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         Soal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        option1.setBackground(new java.awt.Color(249, 247, 228));
         optionGroup.add(option1);
+        option1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                option1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                option1MouseExited(evt);
+            }
+        });
         option1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 option1ActionPerformed(evt);
             }
         });
 
+        option2.setBackground(new java.awt.Color(249, 247, 228));
         optionGroup.add(option2);
+        option2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                option2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                option2MouseExited(evt);
+            }
+        });
         option2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 option2ActionPerformed(evt);
             }
         });
 
+        option3.setBackground(new java.awt.Color(249, 247, 228));
         optionGroup.add(option3);
         option3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -171,6 +190,7 @@ public class Quiz extends javax.swing.JFrame {
             }
         });
 
+        option4.setBackground(new java.awt.Color(249, 247, 228));
         optionGroup.add(option4);
         option4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -319,6 +339,26 @@ public class Quiz extends javax.swing.JFrame {
         // TODO add your handling code here:
         option3.setBackground(jPanel1.getBackground());
     }//GEN-LAST:event_option3MouseExited
+
+    private void option1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option1MouseEntered
+        // TODO add your handling code here:
+        option1.setBackground(new Color(0, 102, 255));
+    }//GEN-LAST:event_option1MouseEntered
+
+    private void option1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option1MouseExited
+        // TODO add your handling code here:
+        option1.setBackground(jPanel1.getBackground());
+    }//GEN-LAST:event_option1MouseExited
+
+    private void option2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option2MouseEntered
+        // TODO add your handling code here:
+        option2.setBackground(new Color(0, 102, 255));
+    }//GEN-LAST:event_option2MouseEntered
+
+    private void option2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_option2MouseExited
+        // TODO add your handling code here:
+        option2.setBackground(jPanel1.getBackground());
+    }//GEN-LAST:event_option2MouseExited
 
     /**
      * @param args the command line arguments

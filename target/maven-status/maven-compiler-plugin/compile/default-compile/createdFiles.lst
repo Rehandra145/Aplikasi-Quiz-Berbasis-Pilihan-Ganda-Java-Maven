@@ -18,6 +18,7 @@ com\mycompany\projekakhir\Quiz$9.class
 com\mycompany\projekakhir\deleteButtonEditor.class
 com\mycompany\projekakhir\Koneksi.class
 com\mycompany\projekakhir\HomeStudent$14.class
+com\mycompany\projekakhir\Edit$2.class
 com\mycompany\projekakhir\Filter$2.class
 com\mycompany\projekakhir\summary$1.class
 com\mycompany\projekakhir\Admin$9.class
@@ -34,8 +35,8 @@ com\mycompany\projekakhir\Admin$3.class
 com\mycompany\projekakhir\Leaderboard.class
 com\mycompany\projekakhir\HomeStudent$12.class
 com\mycompany\projekakhir\HomeStudent$9.class
-com\mycompany\projekakhir\Admin$10.class
 com\mycompany\projekakhir\HomeStudent$2.class
+com\mycompany\projekakhir\Quiz$11.class
 com\mycompany\projekakhir\Admin$7.class
 com\mycompany\projekakhir\Filter$4.class
 com\mycompany\projekakhir\See.class
@@ -50,7 +51,6 @@ com\mycompany\projekakhir\NoKoneksi.class
 com\mycompany\projekakhir\Admin$4.class
 com\mycompany\projekakhir\Edit.class
 com\mycompany\projekakhir\Quiz$4.class
-com\mycompany\projekakhir\Leaderboard$2.class
 com\mycompany\projekakhir\Register$3.class
 com\mycompany\projekakhir\Auth$1.class
 com\mycompany\projekakhir\detailButtonRenderer.class
@@ -58,7 +58,7 @@ com\mycompany\projekakhir\Quiz$8.class
 com\mycompany\projekakhir\Admin$1.class
 com\mycompany\projekakhir\Quiz$1.class
 com\mycompany\projekakhir\HomeStudent$3.class
-com\mycompany\projekakhir\Detail$1.class
+com\mycompany\projekakhir\Quiz$10.class
 com\mycompany\projekakhir\deleteButtonRenderer.class
 com\mycompany\projekakhir\Leaderboard$1.class
 com\mycompany\projekakhir\Login$1.class
